@@ -60,45 +60,46 @@ public class LEDFragment extends Fragment implements View.OnClickListener {
                 /*** 灯总开关：关闭*/
                 off_1.setVisibility(View.INVISIBLE);
                 on_1.setVisibility(View.VISIBLE);
-                sendEvent(1,LightCode.Switch_Off);
+                sendEvent(1,LightCode.Switch_Off,"+IPD,0,2:10");
                 break;
             case R.id.on_1:
                 /*** 灯总开关：开启*/
                 off_1.setVisibility(View.VISIBLE);
                 on_1.setVisibility(View.INVISIBLE);
-                sendEvent(1,LightCode.Switch_On);
+                sendEvent(1,LightCode.Switch_On,"+IPD,0,2:11");
                 break;
             case R.id.off_2:
                 /*** 灯总开关：关闭*/
                 off_2.setVisibility(View.INVISIBLE);
                 on_2.setVisibility(View.VISIBLE);
-                sendEvent(2,LightCode.Switch_Off);
+                sendEvent(2,LightCode.Switch_Off,"+IPD,0,2:20");
                 break;
             case R.id.on_2:
                 /*** 灯总开关：开启*/
                 off_2.setVisibility(View.VISIBLE);
                 on_2.setVisibility(View.INVISIBLE);
-                sendEvent(2,LightCode.Switch_On);
+                sendEvent(2,LightCode.Switch_On,"+IPD,0,2:21");
                 break;
             case R.id.off_3:
                 /*** 灯总开关：关闭*/
                 off_3.setVisibility(View.INVISIBLE);
                 on_3.setVisibility(View.VISIBLE);
-                sendEvent(3,LightCode.Switch_Off);
+                sendEvent(3,LightCode.Switch_Off,"+IPD,0,2:30");
                 break;
             case R.id.on_3:
                 /*** 灯总开关：开启*/
                 off_3.setVisibility(View.VISIBLE);
                 on_3.setVisibility(View.INVISIBLE);
-                sendEvent(3,LightCode.Switch_On);
+                sendEvent(3,LightCode.Switch_On,"+IPD,0,2:31");
                 break;
         }
     }
 
-    private void sendEvent(int client,int state){
+    private void sendEvent(int client,int state,String code){
         WifiEvent event = new WifiEvent(LightCode.Type_Led);
         event.appendHashParam(LightCode.Client,client);
         event.appendHashParam(LightCode.Data,state);
+        event.appendHashParam(LightCode.Code,code);
         EventBus.getDefault().post(event);
     }
 }

@@ -93,9 +93,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             case LightCode.Type_Air:
             case LightCode.Type_Led:
             case LightCode.Type_Window:
-                int client = (int)(event.getHashMap().get(LightCode.Client));
-                int data = (int)(event.getHashMap().get(LightCode.Data));
-                sendSwitchMessage(event.getType(),client,data);
+                String code = (String)(event.getHashMap().get(LightCode.Code));
+                sendSwitchMessage(code);
                 break;
             default:
                 break;
@@ -237,6 +236,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             e.printStackTrace();
         }
         sendMessage = jb.toString();
+        handler.removeCallbacks(sendThread);
+        handler.postDelayed(sendThread, 20);
+    }
+
+    /**
+     * 开关数据
+     **/
+    private void sendSwitchMessage(String code){
+        sendMessage = code;
         handler.removeCallbacks(sendThread);
         handler.postDelayed(sendThread, 20);
     }

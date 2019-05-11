@@ -49,21 +49,22 @@ public class AirFragment extends Fragment implements View.OnClickListener {
                 /*** 灯总开关：关闭*/
                 off.setVisibility(View.INVISIBLE);
                 on.setVisibility(View.VISIBLE);
-                sendEvent(LightCode.Switch_Off);
+                sendEvent(LightCode.Switch_Off,"+IPD,0,2:60");
                 break;
             case R.id.on:
                 /*** 灯总开关：开启*/
                 off.setVisibility(View.VISIBLE);
                 on.setVisibility(View.INVISIBLE);
-                sendEvent(LightCode.Switch_On);
+                sendEvent(LightCode.Switch_On,"+IPD,0,2:61");
                 break;
         }
     }
 
-    private void sendEvent(int state){
+    private void sendEvent(int state,String code){
         WifiEvent event = new WifiEvent(LightCode.Type_Air);
         event.appendHashParam(LightCode.Client,0);
         event.appendHashParam(LightCode.Data,state);
+        event.appendHashParam(LightCode.Code,code);
         EventBus.getDefault().post(event);
     }
 

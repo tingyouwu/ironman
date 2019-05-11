@@ -9,6 +9,7 @@ public class LightCode {
     public static final String Type = "t";//类型
     public static final String Client = "c";//设备端
     public static final String Data = "d";//数据
+    public static final String Code = "code";//控制编码
 
     public static final int Type_Window = 1;//  窗户
     public static final int Type_Air = 2;//空调

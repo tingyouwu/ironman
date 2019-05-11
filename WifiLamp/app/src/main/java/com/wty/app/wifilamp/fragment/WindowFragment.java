@@ -54,33 +54,34 @@ public class WindowFragment extends Fragment implements View.OnClickListener {
                 /*** 灯总开关：关闭*/
                 off_1.setVisibility(View.INVISIBLE);
                 on_1.setVisibility(View.VISIBLE);
-                sendEvent(1,LightCode.Switch_Off);
+                sendEvent(1,LightCode.Switch_Off,"+IPD,0,2:40");
                 break;
             case R.id.on_1:
                 /*** 灯总开关：开启*/
                 off_1.setVisibility(View.VISIBLE);
                 on_1.setVisibility(View.INVISIBLE);
-                sendEvent(1,LightCode.Switch_On);
+                sendEvent(1,LightCode.Switch_On,"+IPD,0,2:41");
                 break;
             case R.id.off_2:
                 /*** 灯总开关：关闭*/
                 off_2.setVisibility(View.INVISIBLE);
                 on_2.setVisibility(View.VISIBLE);
-                sendEvent(2,LightCode.Switch_Off);
+                sendEvent(2,LightCode.Switch_Off,"+IPD,0,2:50");
                 break;
             case R.id.on_2:
                 /*** 灯总开关：开启*/
                 off_2.setVisibility(View.VISIBLE);
                 on_2.setVisibility(View.INVISIBLE);
-                sendEvent(2,LightCode.Switch_On);
+                sendEvent(2,LightCode.Switch_On,"+IPD,0,2:51");
                 break;
         }
     }
 
-    private void sendEvent(int client,int state){
+    private void sendEvent(int client,int state,String code){
         WifiEvent event = new WifiEvent(LightCode.Type_Window);
         event.appendHashParam(LightCode.Client,client);
         event.appendHashParam(LightCode.Data,state);
+        event.appendHashParam(LightCode.Code,code);
         EventBus.getDefault().post(event);
     }
 }
