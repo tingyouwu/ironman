@@ -1,0 +1,1 @@
+include ':app', ':app-common',  ':app-ormlib',':app-widget'
