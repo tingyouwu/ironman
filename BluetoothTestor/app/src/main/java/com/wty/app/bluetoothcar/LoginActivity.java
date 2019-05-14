@@ -2,7 +2,6 @@ package com.wty.app.bluetoothcar;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 import com.kw.app.commonlib.utils.CommonUtil;
 import com.kw.app.commonlib.utils.PreferenceUtil;
 import com.kw.app.ormlib.OrmModuleManager;
-import com.kw.app.widget.activity.BaseActivity;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.wty.app.bluetoothcar.base.AppConstant;
 import com.wty.app.bluetoothcar.base.MyApplication;
@@ -23,8 +21,7 @@ import com.wty.app.bluetoothcar.data.UserDALEx;
 import com.wty.app.bluetoothcar.mvp.contract.IUserLoginContract;
 import com.wty.app.bluetoothcar.mvp.presenter.UserLoginPresenter;
 import com.wty.app.bluetoothcar.view.LoginInputView;
-
-import java.util.List;
+import com.wty.lib.widget.activity.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -59,9 +56,6 @@ public class LoginActivity extends BaseActivity<UserLoginPresenter> implements I
 
     @Override
     public void onInitView(Bundle savedInstanceState) {
-        getDefaultNavigation().setTitle("");
-        getDefaultNavigation().getRootView().setBackgroundColor(Color.TRANSPARENT);
-        getDefaultNavigation().getLeftButton().hide();
         CommonUtil.keyboardControl(LoginActivity.this, false, mloginInputview.getAccountInput());
 
         final boolean isAutoLogin = PreferenceUtil.getInstance().isAutoLogin();
@@ -94,7 +88,7 @@ public class LoginActivity extends BaseActivity<UserLoginPresenter> implements I
             @Override
             public void onLogin() {
                 CommonUtil.keyboardControl(LoginActivity.this, false, mloginInputview.getAccountInput());
-                if (submit()) {
+                if (true) {
                     mPresenter.login(MyApplication.getInstance(),mloginInputview.getAccount().toString(), mloginInputview.getPassword().toString(), mloginInputview.isRememberPsw());
                 }
             }
@@ -127,14 +121,6 @@ public class LoginActivity extends BaseActivity<UserLoginPresenter> implements I
     }
 
     @Override
-    protected List<String> validate() {
-        List<String> list = super.validate();
-        if(!TextUtils.isEmpty(mloginInputview.validata()))
-            list.add(mloginInputview.validata());
-        return list;
-    }
-
-    @Override
     public int getLayoutResource() {
         return R.layout.activity_login;
     }
@@ -163,12 +149,6 @@ public class LoginActivity extends BaseActivity<UserLoginPresenter> implements I
 
         }, 500);
 
-    }
-
-    @Override
-    public void showNoNet() {
-        contentlayout.setVisibility(View.VISIBLE);
-        super.showNoNet();
     }
 
     @Override

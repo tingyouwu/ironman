@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/blue</color>
-    <color name="colorPrimaryDark">@color/blue</color>
-    <color name="colorAccent">@color/blue</color>
     <color name="blue">#25B6ed</color>
     <color name="light_blue">#5bb5f0</color>
     <color name="alpha_blue">#6625B6ed</color>
     <color name="backgroud">#f1f4f7</color>
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="app_main_color">#333333</color>
+    <color name="app_main_yellow">#F3C935</color>
 
     <array name="colors">
         <item>@color/colorBluePrimary</item>

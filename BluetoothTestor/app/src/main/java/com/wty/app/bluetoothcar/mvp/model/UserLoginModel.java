@@ -2,10 +2,9 @@ package com.wty.app.bluetoothcar.mvp.model;
 
 import android.content.Context;
 
-import com.kw.app.commonlib.utils.PreferenceUtil;
-import com.kw.app.widget.ICallBack;
 import com.wty.app.bluetoothcar.data.UserDALEx;
 import com.wty.app.bluetoothcar.mvp.contract.IUserLoginContract;
+import com.wty.lib.widget.utils.ICallBack;
 
 /**
  * @author wty

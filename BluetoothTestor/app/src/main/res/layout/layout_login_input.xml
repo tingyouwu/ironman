@@ -89,7 +89,7 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp" >
 
-        <com.kw.app.widget.view.CheckBoxLabel
+        <com.wty.app.bluetoothcar.view.CheckBoxLabel
             android:id="@+id/btn_login_rememberpsw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

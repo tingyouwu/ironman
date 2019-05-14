@@ -1,1 +1,1 @@
-include ':app', ':app-common',  ':app-ormlib',':app-widget'
+include ':app', ':app_common',  ':app_ormlib',':app_widget'

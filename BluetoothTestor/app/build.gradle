@@ -21,20 +21,8 @@ android {
     }
 
     productFlavors {
-        kuan {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "kuan"]//酷安市场
-        }
-        xiaomi {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "xiaomi"]//小米市场
-        }
-        qh360 {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "qh360"]//360
-        }
         baidu {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "baidu"]//百度
-        }
-        wandoujia {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "wandoujia"]//豌豆荚
         }
         tengxun {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "tengxun"]//腾讯应用宝
@@ -62,17 +50,18 @@ android {
             }
         }
     }
+
+    //为了解决部分第三方库重复打包了META-INF的问题
+    packagingOptions{
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:26+'
-    compile 'com.jakewharton:butterknife:8.6.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
-    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.8.2@aar'
-    compile 'io.reactivex:rxjava:1.1.5'
+    compile project(':app_common')
+    compile project(':app_ormlib')
+    compile project(':app_widget')
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
-    compile project(':app-ormlib')
-    compile project(':app-common')
-    compile project(':app-widget')
 }

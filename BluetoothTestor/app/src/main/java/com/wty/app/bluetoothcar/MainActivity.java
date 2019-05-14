@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
     private void initListener(){
 
         btnleft_up.setOnTouchListener(new View.OnTouchListener() {
+            @Override
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getAction();
                 switch (action) {
@@ -163,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btnleft_down.setOnTouchListener(new View.OnTouchListener() {
+            @Override
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getAction();
                 switch (action) {
@@ -181,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btnright_up.setOnTouchListener(new View.OnTouchListener() {
+            @Override
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getAction();
                 switch (action) {
@@ -199,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btnright_down.setOnTouchListener(new View.OnTouchListener() {
+            @Override
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getAction();
                 switch (action) {
@@ -217,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btngo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getAction();
                 switch (action) {

@@ -2,13 +2,13 @@ package com.wty.app.bluetoothcar.mvp.presenter;
 
 import android.content.Context;
 
-import com.kw.app.commonlib.mvp.presenter.BasePresenter;
 import com.kw.app.commonlib.utils.AppLogUtil;
-import com.kw.app.widget.ICallBack;
-import com.kw.app.widget.view.sweetdialog.OnDismissCallbackListener;
 import com.wty.app.bluetoothcar.data.UserDALEx;
 import com.wty.app.bluetoothcar.mvp.contract.IUserLoginContract;
 import com.wty.app.bluetoothcar.mvp.model.UserLoginModel;
+import com.wty.lib.widget.mvp.presenter.BasePresenter;
+import com.wty.lib.widget.utils.ICallBack;
+import com.wty.lib.widget.utils.OnDismissCallbackListener;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -30,10 +30,6 @@ public class UserLoginPresenter extends BasePresenter<IUserLoginContract.IUserLo
      * 3.通过token连接上融云服务器
      **/
     public void login(final Context context, final String name, final String psw, final boolean isAutoLogin){
-        if(!mView.checkNet()){
-            mView.showNoNet();
-            return;
-        }
 
         mView.showLoading("正在验证用户名...");
         mUserLoginModel.login(context,name, psw, isAutoLogin,new ICallBack<UserDALEx>() {

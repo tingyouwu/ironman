@@ -12,8 +12,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kw.app.commonlib.utils.NetWorkUtils;
-import com.kw.app.widget.view.CheckBoxLabel;
 import com.wty.app.bluetoothcar.R;
 
 import butterknife.BindView;
@@ -103,9 +101,6 @@ public class LoginInputView extends LinearLayout implements OnClickListener{
 			validate = "请填写帐号";
 		} else if (pwd.length() == 0) {
 			validate = "请填写密码";
-		}
-		else if (!NetWorkUtils.isNetworkConnected(getContext())) {
-			validate = getContext().getString(R.string.network_failed);
 		}
 		return validate;
 	}
