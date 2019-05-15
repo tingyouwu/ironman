@@ -153,16 +153,9 @@ public class LoginActivity extends BaseActivity<UserLoginPresenter> implements I
 
     @Override
     public void finishActivity() {
-        new Handler().postDelayed(new Runnable(){
-
-            public void run() {
-                NewMainActivity.startActivity(LoginActivity.this);
-                AppLogUtil.d("跳转到主页面 ");
-                finish();
-            }
-
-        }, 500);
-
+        NewMainActivity.startActivity(LoginActivity.this);
+        AppLogUtil.d("跳转到主页面 ");
+        finish();
     }
 
     @Override

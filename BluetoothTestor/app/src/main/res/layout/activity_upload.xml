@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btn_connect"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/login_press"
+        android:gravity="center"
+        android:text="连接蓝牙血糖仪"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <com.wty.lib.widget.view.xrecyclerview.XRecyclerView
+        android:id="@+id/listview"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.wty.lib.widget.view.xrecyclerview.XRecyclerView>
+
+</LinearLayout>

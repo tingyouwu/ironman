@@ -41,17 +41,10 @@ import java.util.List;
 
 import butterknife.Bind;
 
-import static com.wty.app.bluetoothcar.bluetooth.BluetoothChatService.DEVICE_NAME;
-import static com.wty.app.bluetoothcar.bluetooth.BluetoothChatService.MESSAGE_DEVICE_NAME;
-import static com.wty.app.bluetoothcar.bluetooth.BluetoothChatService.MESSAGE_READ;
-import static com.wty.app.bluetoothcar.bluetooth.BluetoothChatService.MESSAGE_STATE_CHANGE;
-import static com.wty.app.bluetoothcar.bluetooth.BluetoothChatService.MESSAGE_TOAST;
-import static com.wty.app.bluetoothcar.bluetooth.BluetoothChatService.TOAST;
-
+/**
+ * 血糖数据表页面
+ **/
 public class NewMainActivity extends BaseActivity<MainPresenter>  implements IMainContract.IMainView {
-
-    private static final int REQUEST_CONNECT_DEVICE = 1;
-    private static final int REQUEST_ENABLE_BT = 2;
 
     @Bind(R.id.linechart)
     LineChart mlineChart;
@@ -64,12 +57,6 @@ public class NewMainActivity extends BaseActivity<MainPresenter>  implements IMa
     private Legend legend;              //图例
     private LimitLine limitLine;        //限制线
     private List<BloodSugarDALEx> data = new ArrayList<>();
-
-    //蓝牙相关
-    private BluetoothAdapter mBluetoothAdapter = null;
-    private BluetoothChatService mChatService = null;
-    private String mConnectedDeviceName = null;
-
 
     public static void startActivity(Activity activity) {
         Intent intent = new Intent(activity, NewMainActivity.class);
@@ -86,76 +73,13 @@ public class NewMainActivity extends BaseActivity<MainPresenter>  implements IMa
         return R.layout.activity_main_new;
     }
 
-    private final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MESSAGE_STATE_CHANGE:
-                    switch (msg.arg1) {
-                        case BluetoothChatService.STATE_CONNECTED:
-                            break;
-                        case BluetoothChatService.STATE_CONNECTING:
-                            Toast.makeText(MyApplication.getInstance(), "正在连接该蓝牙设备", Toast.LENGTH_SHORT).show();
-                            break;
-                        case BluetoothChatService.STATE_LISTEN:
-                        case BluetoothChatService.STATE_NONE:
-                            break;
-                    }
-                    break;
-                case MESSAGE_READ:
-                    byte[] readBuf = (byte[]) msg.obj;
-                    // construct a string from the valid bytes in the buffer
-                    String readMessage = new String(readBuf, 0, msg.arg1);
-                    break;
-                case MESSAGE_DEVICE_NAME:
-                    // save the connected device's name
-                    mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
-                    Toast.makeText(getApplicationContext(), "连接上 "
-                            + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
-                    break;
-                case MESSAGE_TOAST:
-                    Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),
-                            Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    };
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
-            case REQUEST_CONNECT_DEVICE:
-                if (resultCode == Activity.RESULT_OK) {
-                    String address = data.getExtras()
-                            .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
-                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
-                    if(mChatService == null){
-                        mChatService = new BluetoothChatService(this, mHandler);
-                        mChatService.start();
-                    }
-                    mChatService.connect(device);
-                }
-                break;
-
-            case REQUEST_ENABLE_BT:
-                if (resultCode == Activity.RESULT_OK) {
-                    Toast.makeText(this, R.string.bt_enabled_success, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, R.string.bt_not_enabled_leaving, Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-                break;
-        }
-    }
-
     @Override
     public void onInitView(Bundle savedInstanceState) {
         getDefaultNavigation().setTitle("血糖数据表");
         getDefaultNavigation().getLeftButton().setButton("采集", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent serverIntent = new Intent(NewMainActivity.this, DeviceListActivity.class);
-                startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+                UserUploadDataActivity.startActivity(NewMainActivity.this);
             }
         });
         getDefaultNavigation().getRightButton().setButton("切换账号", new View.OnClickListener() {
@@ -293,10 +217,13 @@ public class NewMainActivity extends BaseActivity<MainPresenter>  implements IMa
         bloodSugar.setDate("2019-06-31");
         bloodSugar.setLevel(Float.valueOf("70.5"));
         bloodSugar.saveOrUpdate();
-
-        mPresenter.refreshData();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.refreshData();
+    }
 
     /**
      * 初始化图表
