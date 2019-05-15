@@ -13,7 +13,6 @@ public class PreferenceUtil {
 
 	private static String PREFERENCES_NAME = "Preferences";//preference名字
 	public static String LastPassword = "lastPassword";//登陆密码
-	public static String LastName = "lastname";//登陆名字
 	public static String LastAccount = "laseAccount";//由服务器分配的表示账号唯一性
 	public static String IsAutoLogin = "IsAutoLogin";//是否自动登陆
 	public static String IsFirstLogin = "isFirstLogin";//是否是第一次安装应用程序
@@ -67,10 +66,6 @@ public class PreferenceUtil {
 
 	public boolean isAutoLogin(){
 		return mSharedPreferences.getBoolean(IsAutoLogin, false);
-	}
-
-	public String getLastName(){
-		return mSharedPreferences.getString(LastName, null);
 	}
 
 	public boolean isFirstLogin(){

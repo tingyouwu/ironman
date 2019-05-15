@@ -14,16 +14,15 @@ import android.widget.TextView;
 
 import com.wty.app.bluetoothcar.R;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class LoginInputView extends LinearLayout implements OnClickListener{
-	
-	// 登录按钮
-	@BindView(R.id.btn_login) Button btn_submit;
-	@BindView(R.id.et_account) EditText et_account;
-	@BindView(R.id.et_password) EditText et_password;
-	@BindView(R.id.btn_login_rememberpsw) CheckBoxLabel btn_login_rememberpsw;
+
+	@Bind(R.id.btn_login) Button btn_submit;
+	@Bind(R.id.et_account) EditText et_account;
+	@Bind(R.id.et_password) EditText et_password;
+	@Bind(R.id.btn_login_rememberpsw) CheckBoxLabel btn_login_rememberpsw;
 
 	public LoginInputView(Context context) {
 		this(context,null);
@@ -37,8 +36,9 @@ public class LoginInputView extends LinearLayout implements OnClickListener{
 	private void init(Context context){
 		LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		li.inflate(R.layout.layout_login_input, this);
+
 		ButterKnife.bind(this);
-		
+
 		btn_submit.setOnClickListener(this);
 		et_password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
@@ -98,7 +98,7 @@ public class LoginInputView extends LinearLayout implements OnClickListener{
 		String validate = "";
 		// 帐号要在6-13位之间
 		if (uin.length() == 0) {
-			validate = "请填写帐号";
+			validate = "请填写正确手机号";
 		} else if (pwd.length() == 0) {
 			validate = "请填写密码";
 		}

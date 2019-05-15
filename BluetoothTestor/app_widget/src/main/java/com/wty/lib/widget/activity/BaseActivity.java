@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -18,6 +19,10 @@ import com.wty.lib.widget.mvp.presenter.BasePresenter;
 import com.wty.lib.widget.mvp.view.IBaseView;
 import com.wty.lib.widget.utils.OnDismissCallbackListener;
 import com.wty.lib.widget.utils.SystemBarTintManager;
+import com.wty.lib.widget.view.navigation.NavigationText;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -33,6 +38,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     protected View mRootView;
     protected SystemBarTintManager tintManager;//沉浸式状态栏
     public SweetAlertDialog loadingdialog;
+    protected NavigationText navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +53,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         setContentView(mRootView);
         ButterKnife.bind(this, mRootView);
         onInitView(savedInstanceState);
+        setNavigation(getDefaultNavigation());
     }
 
     @Override
@@ -57,6 +64,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ButterKnife.unbind(this);
         if (mPresenter != null && this instanceof IBaseView) {
             mPresenter.detachView();
             mPresenter = null;
@@ -68,7 +76,31 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
      * @return
      */
     protected boolean isEnableStatusBar() {
-        return false;
+        return true;
+    }
+
+    /**
+     * 功能描述：设置标题栏
+     **/
+    private void setNavigation(View navigation){
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
+                    android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                    android.view.ViewGroup.LayoutParams.MATCH_PARENT);
+            actionBar.setDisplayShowCustomEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayShowHomeEnabled(false);
+            actionBar.setCustomView(navigation, layoutParams);
+            actionBar.show();
+        }
+    }
+
+    public NavigationText getDefaultNavigation(){
+        if(navigation==null){
+            navigation = new NavigationText(this);
+        }
+        return navigation;
     }
 
     @TargetApi(19)
@@ -85,6 +117,28 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             getWindow().setStatusBarColor(getResources().getColor(R.color.app_main_color));
         }
 
+    }
+
+    /**
+     * @Decription 校验数据
+     **/
+    protected List<String> validate(){
+        return new ArrayList<String>();
+    }
+
+    /**
+     * @Decription 提交数据
+     * 第一步：校验数据
+     * 第二步：校验网络是否联通
+     **/
+    protected boolean submit(){
+        List<String> validate = validate();
+        if(validate.size()!=0){
+            showFailed(validate.get(0));
+            return false;
+        }else{
+            return true;
+        }
     }
 
     /**

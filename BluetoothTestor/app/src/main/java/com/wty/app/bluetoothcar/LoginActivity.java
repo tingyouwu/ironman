@@ -1,6 +1,7 @@
 package com.wty.app.bluetoothcar;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.kw.app.commonlib.utils.AppLogUtil;
 import com.kw.app.commonlib.utils.CommonUtil;
 import com.kw.app.commonlib.utils.PreferenceUtil;
 import com.kw.app.ormlib.OrmModuleManager;
@@ -23,7 +25,7 @@ import com.wty.app.bluetoothcar.mvp.presenter.UserLoginPresenter;
 import com.wty.app.bluetoothcar.view.LoginInputView;
 import com.wty.lib.widget.activity.BaseActivity;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.OnClick;
 import rx.functions.Action1;
 
@@ -33,18 +35,28 @@ import rx.functions.Action1;
  **/
 public class LoginActivity extends BaseActivity<UserLoginPresenter> implements IUserLoginContract.IUserLoginView{
 
-    @BindView(R.id.login_icon)
+    public static final String IS_ChangeClient= "IS_ChangeClient";
+
+    @Bind(R.id.login_icon)
     ImageView mloginIcon;
-    @BindView(R.id.login_inputview)
+    @Bind(R.id.login_inputview)
     LoginInputView mloginInputview;
-    @BindView(R.id.login_version)
+    @Bind(R.id.login_version)
     TextView tv_version;
-    @BindView(R.id.rl_content)
+    @Bind(R.id.rl_content)
     RelativeLayout contentlayout;
+
+    boolean isChangeClient;
 
     @OnClick(R.id.login_signup)
     void goToRegisterActivity(){
-//        UserRegisterActivity.startUserRegisterActivity(this, AppConstant.ActivityResult.Request_Register);
+        UserRegisterActivity.startActivity(this, AppConstant.ActivityResult.Request_Register);
+    }
+
+    public static void startActivity(Activity activity,boolean isChangeClient) {
+        Intent intent = new Intent(activity, LoginActivity.class);
+        intent.putExtra(IS_ChangeClient,isChangeClient);
+        activity.startActivity(intent);
     }
 
     private String userid;
@@ -56,20 +68,19 @@ public class LoginActivity extends BaseActivity<UserLoginPresenter> implements I
 
     @Override
     public void onInitView(Bundle savedInstanceState) {
+        isChangeClient = getIntent().getBooleanExtra(IS_ChangeClient,false);
+
         CommonUtil.keyboardControl(LoginActivity.this, false, mloginInputview.getAccountInput());
 
         final boolean isAutoLogin = PreferenceUtil.getInstance().isAutoLogin();
-        String name = PreferenceUtil.getInstance().getLastName();
         String psw = PreferenceUtil.getInstance().getLastPassword();
         String userid = PreferenceUtil.getInstance().getLastAccount();
 
-        if(PreferenceUtil.getInstance().isFirstLogin() && Build.VERSION.SDK_INT == Build.VERSION_CODES.M){
+        if(PreferenceUtil.getInstance().isFirstLogin() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             //如果是第一次安装应用程序 适配android6.0动态权限
             RxPermissions.getInstance(this)
                     .request(Manifest.permission.READ_PHONE_STATE,
-                            Manifest.permission.WRITE_CONTACTS,
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.RECORD_AUDIO)
+                            Manifest.permission.READ_EXTERNAL_STORAGE)
                     .subscribe(new Action1<Boolean>() {
                         @Override
                         public void call(Boolean aBoolean) {
@@ -96,8 +107,8 @@ public class LoginActivity extends BaseActivity<UserLoginPresenter> implements I
 
         tv_version.setText("V"+ CommonUtil.getVersion(this)+"."+CommonUtil.getVersionCode(this));
 
-        if (name != null) {
-            mloginInputview.setAccount(name);
+        if (userid != null) {
+            mloginInputview.setAccount(userid);
             mloginInputview.setPassword(psw);
             if (!TextUtils.isEmpty(psw)) {
                 mloginInputview.setIsRememberPsw(true);
@@ -108,16 +119,17 @@ public class LoginActivity extends BaseActivity<UserLoginPresenter> implements I
             mloginInputview.setIsRememberPsw(false);
         }
 
-        if(isAutoLogin){//自动登录就调整到主页面
-            UserDALEx user = new UserDALEx();
-            user.setUserid(userid);
-            user.setNickname(name);
-
+        if(isAutoLogin && !isChangeClient){//自动登录就调整到主页面
             contentlayout.setVisibility(View.GONE);
-//            mPresenter.loginAuto(LoginActivity.this,user);
+            finishActivity();
         }else{
             contentlayout.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    protected boolean isEnableStatusBar() {
+        return true;
     }
 
     @Override
@@ -129,21 +141,23 @@ public class LoginActivity extends BaseActivity<UserLoginPresenter> implements I
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == AppConstant.ActivityResult.Request_Register) {
-//                userid = data.getStringExtra(UserRegisterActivity.USERID);
-//                UserDALEx user = UserDALEx.get().findById(userid);
-//                mloginInputview.getAccountInput().setText(user.getNickname());
+                //切换数据库
+                OrmModuleManager.getInstance().setCurrentDBName(AppConstant.DBName.Common_DB);
+                userid = data.getStringExtra(UserRegisterActivity.USERID);
+                AppLogUtil.d(userid);
+                UserDALEx user = UserDALEx.get().findById(userid);
+                mloginInputview.getAccountInput().setText(user.getUserid());
             }
         }
     }
 
     @Override
     public void finishActivity() {
-        //登录成功之后设置一下当前数据库名字
-        OrmModuleManager.getInstance().setCurrentDBName(PreferenceUtil.getInstance().getLastAccount());
         new Handler().postDelayed(new Runnable(){
 
             public void run() {
-//                MainActivity.startMainActivity(LoginActivity.this);
+                NewMainActivity.startActivity(LoginActivity.this);
+                AppLogUtil.d("跳转到主页面 ");
                 finish();
             }
 

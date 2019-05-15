@@ -15,9 +15,6 @@ public class UserDALEx extends SqliteBaseDALEx {
 	private String userid;
 
 	@DatabaseField(Type = FieldType.VARCHAR)
-	private String username; // 用户的用户名
-
-	@DatabaseField(Type = FieldType.VARCHAR)
 	private String password;
 
 
@@ -32,14 +29,6 @@ public class UserDALEx extends SqliteBaseDALEx {
 
 	public void setUserid(String userid) {
 		this.userid = userid;
-	}
-
-	public String getNickname() {
-		return username;
-	}
-
-	public void setNickname(String nickname) {
-		this.username = nickname;
 	}
 
 	public String getPassword() {

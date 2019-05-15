@@ -24,18 +24,17 @@ public class UserLoginPresenter extends BasePresenter<IUserLoginContract.IUserLo
     }
 
     /**
-     * 登录验证过程：
-     * 1.先去bmob服务器验证一下账号和密码
-     * 2.再通过账号和密码 去融云获取token
-     * 3.通过token连接上融云服务器
+     * 登录验证
      **/
     public void login(final Context context, final String name, final String psw, final boolean isAutoLogin){
 
         mView.showLoading("正在验证用户名...");
-        mUserLoginModel.login(context,name, psw, isAutoLogin,new ICallBack<UserDALEx>() {
+        mUserLoginModel.login(context,name, psw, isAutoLogin,new ICallBack<String>() {
             @Override
-            public void onSuccess(UserDALEx user) {
+            public void onSuccess(String userid) {
                 AppLogUtil.d("验证账号密码成功");
+                mView.dismissLoading(null);
+                mView.finishActivity();
             }
 
             @Override

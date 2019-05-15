@@ -10,4 +10,8 @@ public class AppConstant {
         public final static int Request_Register = 103;
     }
 
+    public static class DBName{
+        public final static String Common_DB = "common";
+    }
+
 }

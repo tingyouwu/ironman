@@ -309,14 +309,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
             }
         });
-
-        tv_setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent serverIntent = new Intent(MainActivity.this, CodeSetttingActivity.class);
-                startActivity(serverIntent);
-            }
-        });
     }
 
     /**

@@ -40,7 +40,6 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (mRootView == null) {
             mRootView = inflater.inflate(getLayoutResource(), container, false);
-            ButterKnife.bind(this, mRootView);
         }
         this.isInitView = true;
         return mRootView;
@@ -81,6 +80,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     @Override
     public void onDestroy() {
         super.onDestroy();
+        ButterKnife.unbind(this);
         if (mPresenter != null && this instanceof IBaseView) {
             mPresenter.detachView();
             mPresenter = null;
