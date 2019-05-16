@@ -65,4 +65,5 @@ dependencies {
     compile project(':app_ormlib')
     compile project(':app_widget')
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
+    compile 'com.github.codbking:PickTime:v1.0.1'
 }

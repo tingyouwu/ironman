@@ -9,22 +9,33 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kw.app.commonlib.utils.AppLogUtil;
+import com.kw.app.commonlib.utils.NumberUtil;
+import com.kw.app.commonlib.utils.TimeUtil;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.wty.app.bluetoothcar.base.MyApplication;
 import com.wty.app.bluetoothcar.bluetooth.BluetoothChatService;
 import com.wty.app.bluetoothcar.bluetooth.DeviceListActivity;
+import com.wty.app.bluetoothcar.data.BloodSugarDALEx;
 import com.wty.app.bluetoothcar.mvp.contract.IUserUploadContract;
 import com.wty.app.bluetoothcar.mvp.presenter.UserUploadPresenter;
 import com.wty.lib.widget.activity.BaseActivity;
+import com.wty.lib.widget.utils.OnDismissCallbackListener;
 import com.wty.lib.widget.view.xrecyclerview.XRecyclerView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import rx.functions.Action1;
 
+import static cn.pedant.SweetAlert.SweetAlertDialog.NORMAL_TYPE;
 import static com.wty.app.bluetoothcar.bluetooth.BluetoothChatService.DEVICE_NAME;
 import static com.wty.app.bluetoothcar.bluetooth.BluetoothChatService.MESSAGE_DEVICE_NAME;
 import static com.wty.app.bluetoothcar.bluetooth.BluetoothChatService.MESSAGE_READ;
@@ -69,6 +80,12 @@ public class UserUploadDataActivity extends BaseActivity<UserUploadPresenter> im
     @Override
     public void onInitView(Bundle savedInstanceState) {
         getDefaultNavigation().setTitle("采集数据");
+        getDefaultNavigation().getRightButton().setButton("人工采集", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               UserManualUploadDataActivity.startActivity(UserUploadDataActivity.this);
+            }
+        });
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
             Toast.makeText(this, "手机无蓝牙设备", Toast.LENGTH_SHORT).show();
@@ -171,6 +188,25 @@ public class UserUploadDataActivity extends BaseActivity<UserUploadPresenter> im
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
                     tvDetail.setText(readMessage);
+                    try {
+                        JSONObject jsonObject = new JSONObject(readMessage);
+                        final String value = jsonObject.optString("value");
+                        AppLogUtil.d(readMessage);
+                        if(!TextUtils.isEmpty(value) && NumberUtil.isDoubleOrFloat(value)){
+                            //收到有效数据
+                            onToast(new OnDismissCallbackListener("确认接收该数据?",NORMAL_TYPE) {
+                                @Override
+                                public void onCallback() {
+                                    BloodSugarDALEx dalEx = new BloodSugarDALEx();
+                                    dalEx.setDate(TimeUtil.getFormatToday(TimeUtil.FORMAT_YEAR_MONTH_DAY));
+                                    dalEx.setLevel(Float.valueOf(value));
+                                    mPresenter.uploadData(dalEx);
+                                }
+                            });
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     Toast.makeText(MyApplication.getInstance(), readMessage,
                             Toast.LENGTH_LONG).show();
                     break;

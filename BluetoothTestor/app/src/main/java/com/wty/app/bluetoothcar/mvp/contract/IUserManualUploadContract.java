@@ -7,15 +7,16 @@ import com.wty.lib.widget.utils.ICallBack;
 import com.wty.lib.widget.utils.OnDismissCallbackListener;
 
 /**
+ * 人工收集协议
  * @author wty
  */
-public interface IUserUploadContract {
+public interface IUserManualUploadContract {
 
-    interface IUserUploadModel extends IBaseModel {
-        void uploadData(BloodSugarDALEx dalEx,ICallBack<String> callBack);
+    interface IUserManualUploadModel extends IBaseModel {
+        void uploadData(BloodSugarDALEx dalEx, ICallBack<String> callBack);
     }
 
-    interface IUserUploadView extends IBaseView {
+    interface IUserManualUploadView extends IBaseView {
         void showLoading(String loadmsg);
         void dismissLoading(OnDismissCallbackListener callback);
     }

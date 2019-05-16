@@ -47,13 +47,16 @@
             android:configChanges="orientation|keyboardHidden" />
 
         <activity
-            android:name=".NewMainActivity"
-            android:theme="@style/AppTheme"/>
+            android:name=".NewMainActivity"/>
 
 
         <activity
-            android:name=".UserUploadDataActivity"
-            android:theme="@style/AppTheme"/>
+            android:name=".UserUploadDataActivity" />
+
+        <activity
+            android:name=".UserManualUploadDataActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
     </application>
 
 </manifest>

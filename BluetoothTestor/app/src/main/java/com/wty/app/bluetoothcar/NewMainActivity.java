@@ -27,9 +27,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.kw.app.commonlib.utils.AppLogUtil;
 import com.kw.app.commonlib.utils.PreferenceUtil;
 import com.kw.app.ormlib.OrmModuleManager;
-import com.wty.app.bluetoothcar.base.MyApplication;
-import com.wty.app.bluetoothcar.bluetooth.BluetoothChatService;
-import com.wty.app.bluetoothcar.bluetooth.DeviceListActivity;
 import com.wty.app.bluetoothcar.data.BloodSugarDALEx;
 import com.wty.app.bluetoothcar.mvp.contract.IMainContract;
 import com.wty.app.bluetoothcar.mvp.presenter.MainPresenter;
@@ -55,7 +52,7 @@ public class NewMainActivity extends BaseActivity<MainPresenter>  implements IMa
     private YAxis leftYAxis;            //左侧Y轴
     private YAxis rightYaxis;           //右侧Y轴
     private Legend legend;              //图例
-    private LimitLine limitLine;        //限制线
+    private LimitLine limitLineLow,limitLineHigh;        //限制线
     private List<BloodSugarDALEx> data = new ArrayList<>();
 
     public static void startActivity(Activity activity) {
@@ -91,132 +88,6 @@ public class NewMainActivity extends BaseActivity<MainPresenter>  implements IMa
         });
         OrmModuleManager.getInstance().setCurrentDBName(PreferenceUtil.getInstance().getLastAccount());
         initChart();
-
-
-        BloodSugarDALEx bloodSugar = new BloodSugarDALEx();
-        bloodSugar.setDate("2019-05-14");
-        bloodSugar.setLevel(Float.valueOf("25.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-05-15");
-        bloodSugar.setLevel(Float.valueOf("20.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-05-17");
-        bloodSugar.setLevel(Float.valueOf("21.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-05-20");
-        bloodSugar.setLevel(Float.valueOf("10.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-05-29");
-        bloodSugar.setLevel(Float.valueOf("70.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-05-09");
-        bloodSugar.setLevel(Float.valueOf("21.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-05-10");
-        bloodSugar.setLevel(Float.valueOf("10.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-05-31");
-        bloodSugar.setLevel(Float.valueOf("70.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-09");
-        bloodSugar.setLevel(Float.valueOf("21.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-04-10");
-        bloodSugar.setLevel(Float.valueOf("10.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-10");
-        bloodSugar.setLevel(Float.valueOf("21.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-11");
-        bloodSugar.setLevel(Float.valueOf("10.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-12");
-        bloodSugar.setLevel(Float.valueOf("21.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-13");
-        bloodSugar.setLevel(Float.valueOf("10.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-14");
-        bloodSugar.setLevel(Float.valueOf("21.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-15");
-        bloodSugar.setLevel(Float.valueOf("10.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-16");
-        bloodSugar.setLevel(Float.valueOf("21.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-17");
-        bloodSugar.setLevel(Float.valueOf("10.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-18");
-        bloodSugar.setLevel(Float.valueOf("21.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-19");
-        bloodSugar.setLevel(Float.valueOf("10.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-20");
-        bloodSugar.setLevel(Float.valueOf("21.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-21");
-        bloodSugar.setLevel(Float.valueOf("10.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-22");
-        bloodSugar.setLevel(Float.valueOf("21.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-23");
-        bloodSugar.setLevel(Float.valueOf("19.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-24");
-        bloodSugar.setLevel(Float.valueOf("21.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-25");
-        bloodSugar.setLevel(Float.valueOf("2.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-26");
-        bloodSugar.setLevel(Float.valueOf("21.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-27");
-        bloodSugar.setLevel(Float.valueOf("17.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-28");
-        bloodSugar.setLevel(Float.valueOf("22.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-29");
-        bloodSugar.setLevel(Float.valueOf("16.5"));
-        bloodSugar.saveOrUpdate();
-
-        bloodSugar.setDate("2019-06-31");
-        bloodSugar.setLevel(Float.valueOf("70.5"));
-        bloodSugar.saveOrUpdate();
     }
 
     @Override
@@ -277,13 +148,22 @@ public class NewMainActivity extends BaseActivity<MainPresenter>  implements IMa
         //是否绘制在图表里面
         legend.setDrawInside(false);
         /** 设置警戒值*/
-        limitLine = new LimitLine(50,"血糖警戒值");
-        limitLine.setLineWidth(1f);
-        limitLine.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
-        limitLine.setLineColor(Color.RED);
-        limitLine.setTextColor(getResources().getColor(R.color.colorRedPrimary));
-        limitLine.setTextSize(10f);
-        leftYAxis.addLimitLine(limitLine);
+
+        limitLineLow = new LimitLine((float) 3.9,"血糖正常最低值");
+        limitLineLow.setLineWidth(1f);
+        limitLineLow.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
+        limitLineLow.setLineColor(Color.RED);
+        limitLineLow.setTextColor(getResources().getColor(R.color.colorRedPrimary));
+        limitLineLow.setTextSize(10f);
+        leftYAxis.addLimitLine(limitLineLow);
+
+        limitLineHigh = new LimitLine((float)6.1,"血糖正常最高值");
+        limitLineHigh.setLineWidth(1f);
+        limitLineHigh.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
+        limitLineHigh.setLineColor(Color.RED);
+        limitLineHigh.setTextColor(getResources().getColor(R.color.colorRedPrimary));
+        limitLineHigh.setTextSize(10f);
+        leftYAxis.addLimitLine(limitLineHigh);
     }
 
 
@@ -330,6 +210,10 @@ public class NewMainActivity extends BaseActivity<MainPresenter>  implements IMa
         AppLogUtil.d("获取数据成功");
         data.clear();
         data.addAll(list);
+        if(data.size() == 0){
+            mTvDesc.setVisibility(View.GONE);
+            return;
+        }
 
         ArrayList<Entry> yVals = new ArrayList<>();
         for(int index = 0;index<list.size();index++){
@@ -337,19 +221,15 @@ public class NewMainActivity extends BaseActivity<MainPresenter>  implements IMa
             yVals.add(new Entry(index,item.getLevel()));
         }
 
-        if(list.size() == 0){
-            mTvDesc.setVisibility(View.GONE);
-        }else {
-            String desc;
-            mTvDesc.setVisibility(View.VISIBLE);
-            if(list.size()==1){
-                //只有一条数据
-                desc = String.format("数据采集时间\n%s",list.get(0).getDate());
-            }else{
-                desc = String.format("数据采集时间\n从 %s 至 %s",list.get(list.size()-1).getDate(),list.get(0).getDate());
-            }
-            mTvDesc.setText(desc);
+        String desc;
+        mTvDesc.setVisibility(View.VISIBLE);
+        if(list.size()==1){
+            //只有一条数据
+            desc = String.format("数据采集时间\n%s",list.get(0).getDate());
+        }else{
+            desc = String.format("数据采集时间\n从 %s 至 %s",list.get(list.size()-1).getDate(),list.get(0).getDate());
         }
+        mTvDesc.setText(desc);
 
         LineDataSet set = new LineDataSet(yVals,"您的血糖测量数据");
         initLineDataSet(set,getResources().getColor(R.color.app_main_yellow),LineDataSet.Mode.LINEAR);

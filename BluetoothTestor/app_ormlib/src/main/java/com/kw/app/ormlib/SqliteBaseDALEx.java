@@ -650,16 +650,16 @@ public abstract class SqliteBaseDALEx implements Serializable,Cloneable{
 	/**
 	 * @Decription 保存或者刷新单个对象
 	 **/
-	public void saveOrUpdate(){
+	public boolean saveOrUpdate(){
 		BaseSqliteOpenHelper db = getDB();
         String id = getPrimaryId();
-        if(TextUtils.isEmpty(id))return;
+        if(TextUtils.isEmpty(id))return false;
         createTable();
         ContentValues values = tranform2Values();
         if(!TextUtils.isEmpty(id) && isExist(id)){
-            db.update(TABLE_NAME, values, getPrimaryKey()+"=?", new String[]{id});
+            return db.update(TABLE_NAME, values, getPrimaryKey()+"=?", new String[]{id});
         }else{
-            db.save(TABLE_NAME, values);
+			return db.save(TABLE_NAME, values);
         }
 
 	}
